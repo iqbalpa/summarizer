@@ -2,6 +2,7 @@ package repo
 
 import (
 	"fmt"
+	"summarizer/internal/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -30,4 +31,8 @@ func ConnectDb() *gorm.DB {
 	}
 	fmt.Println("Connected to DB successfully!")
 	return db
+}
+
+func MigrateDb(db *gorm.DB) {
+	db.AutoMigrate(&model.User{})
 }

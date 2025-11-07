@@ -10,6 +10,8 @@ import (
 
 func App() *fiber.App {
 	db := repo.ConnectDb()
+	repo.MigrateDb(db)
+	
 	var userRepo repo.IUserRepository = repo.NewUserRepository(db)
 	var userService service.IUserService = service.NewUserService(userRepo)
 	var userHandler handler.UserHandler = *handler.NewUserHandler(userService)
