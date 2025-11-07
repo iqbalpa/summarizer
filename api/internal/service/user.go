@@ -3,10 +3,11 @@ package service
 import (
 	"summarizer/internal/model"
 	"summarizer/internal/repo"
+	"summarizer/internal/utils"
 )
 
 type IUserService interface {
-	CreateUser(name, username string) (model.User, error)
+	CreateUser(name, username, encryptedPass string) (model.User, error)
 }
 
 type UserService struct {
@@ -19,7 +20,11 @@ func NewUserService(ur repo.IUserRepository) *UserService {
 	}
 }
 
-func (us *UserService) CreateUser(name, username string) (model.User, error) {
-	user, err := us.ur.CreateUser(name, username)
+func (us *UserService) CreateUser(name, username, password string) (model.User, error) {
+	encryptedPass, err := utils.HashPassword(password)
+	if err != nil {
+		return model.User{}, err
+	}
+	user, err := us.ur.CreateUser(name, username, encryptedPass)
 	return user, err
 }

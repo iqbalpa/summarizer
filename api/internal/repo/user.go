@@ -8,7 +8,7 @@ import (
 )
 
 type IUserRepository interface {
-	CreateUser(name, username string) (model.User, error)
+	CreateUser(name, username, encryptedPass string) (model.User, error)
 }
 
 type UserRepository struct {
@@ -21,10 +21,11 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	}
 }
 
-func (ur *UserRepository) CreateUser(name, username string) (model.User, error) {
+func (ur *UserRepository) CreateUser(name, username, encryptedPass string) (model.User, error) {
 	user := model.User{
 		Name:     name,
 		Username: username,
+		Password: encryptedPass,
 	}
 	res := ur.db.Create(&user)
 	if res.Error != nil {
