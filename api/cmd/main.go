@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	internal.App()
+	app := internal.App()
+	app.Listen(":3000")
 }
