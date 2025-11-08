@@ -7,7 +7,8 @@ import (
 )
 
 type IUserService interface {
-	CreateUser(name, username, encryptedPass string) (model.User, error)
+	CreateUser(name, username, password string) (model.User, error)
+	Login(username, password string) (string, error)
 }
 
 type UserService struct {
@@ -27,4 +28,17 @@ func (us *UserService) CreateUser(name, username, password string) (model.User, 
 	}
 	user, err := us.ur.CreateUser(name, username, encryptedPass)
 	return user, err
+}
+
+func (us *UserService) Login(username, password string) (string, error) {
+	user, err := us.ur.GetUser(username)
+	if err != nil {
+		return "failed to login", err
+	}
+	// check the password
+	_, err = utils.ComparePassword(password, user.Password)
+	if err != nil {
+		return "", err
+	}
+	return "login succeed", nil
 }
