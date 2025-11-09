@@ -5,6 +5,12 @@ def load_model():
     model = AutoModelForSeq2SeqLM.from_pretrained("shorecode/t5-efficient-tiny-summarizer-general-purpose-v2")
     return model, tokenizer
 
+def summarize(model, tokenizer, content) -> str:
+    inputs = tokenizer([content], return_tensors="pt")
+    ids = model.generate(**inputs)
+    res = tokenizer.batch_decode(ids, skip_special_token=True)
+    return res[0]
+
 if __name__ == "__main__":
     model, tokenizer = load_model()
     print(f"Model:\n {model}")

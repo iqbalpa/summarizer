@@ -1,5 +1,5 @@
 from model import Document
-from utils import load_model
+from utils import load_model, summarize
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -9,13 +9,13 @@ def read_root():
     return {"Hello": "World"}
 
 @app.post("/api/v1/summarize")
-async def summarize(doc: Document):
+async def summary(doc: Document):
     model, tokenizer = load_model()
-    print(model)
-    print(tokenizer)
+    res = summarize(model, tokenizer, doc.content)
     return {
         "document": {
             "title": doc.title,
             "content": doc.content,
+            "summary": res
         },
     }
