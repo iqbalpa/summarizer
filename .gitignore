@@ -1,3 +1,6 @@
 builds/
 .env
 tmp/
+env/
+.env
+__pycache__/
