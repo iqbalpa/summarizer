@@ -41,5 +41,9 @@ func (us *UserService) Login(username, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return "login succeed", nil
+	token, err := utils.GenerateToken(user.Username)
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }
