@@ -11,8 +11,8 @@ import (
 func UserRouter(api fiber.Router, uh UserHandler) {
 	api.Route("/auth", func(router fiber.Router) {
 		router.Get("/test", uh.TestUser)
-		router.Post("/", uh.CreateUser)
-		router.Post("/login", uh.Login)
+		router.Post("/signup", uh.CreateUser)
+		router.Post("/signin", uh.Login)
 	})
 }
 

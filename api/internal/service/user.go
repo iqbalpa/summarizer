@@ -27,6 +27,7 @@ func (us *UserService) CreateUser(name, username, password string) (model.User, 
 		return model.User{}, err
 	}
 	user, err := us.ur.CreateUser(name, username, encryptedPass)
+	user.Password = ""
 	return user, err
 }
 
