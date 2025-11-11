@@ -23,9 +23,14 @@ func App() *fiber.App {
 	var userService service.IUserService = service.NewUserService(userRepo)
 	var userHandler handler.UserHandler = *handler.NewUserHandler(userService)
 
+	var summaryRepo repo.ISummaryRepository = repo.NewSummaryRepository(db)
+	var summaryService service.ISummaryService = service.NewSummaryService(summaryRepo)
+	var summaryHandler handler.SummaryHandler = *handler.NewSummaryHandler(summaryService)
+
 	app := fiber.New()
 	api := app.Group("/api/v1")
 	handler.UserRouter(api, userHandler)
+	handler.SummaryRouter(api, summaryHandler)
 
 	return app
 }
