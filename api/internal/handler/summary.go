@@ -41,11 +41,11 @@ func (sh *SummaryHandler) CreateSummary(c *fiber.Ctx) error {
 	if err := c.BodyParser(&sr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	err := sh.ss.CreateSummary(sr.Title, sr.Content)
+	s, err := sh.ss.CreateSummary(sr.Title, sr.Content, "")
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	return c.Status(fiber.StatusAccepted).JSON(map[string]string{"message": "OK"})
+	return c.Status(fiber.StatusCreated).JSON(s)
 }
 
 func (sh *SummaryHandler) GetAllSummaries(c *fiber.Ctx) error {

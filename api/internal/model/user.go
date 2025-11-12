@@ -9,6 +9,9 @@ type User struct {
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+
+	// a user has multiple jobs
+	Jobs []Job `gorm:"foreignKey:UserId;references:ID"`
 }
 
 type UserRequest struct {

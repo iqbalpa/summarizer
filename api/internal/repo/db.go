@@ -34,6 +34,12 @@ func ConnectDb() *gorm.DB {
 }
 
 func MigrateDb(db *gorm.DB) {
+	fmt.Println("Delete existing data...")
+	// db.Where("1 = 1").Delete(&model.User{})
+	db.Where("1 = 1").Delete(&model.Summary{})
+	db.Where("1 = 1").Delete(&model.Job{})
+	fmt.Println("Migrating a new table...")
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Summary{})
+	db.AutoMigrate(&model.Job{})
 }

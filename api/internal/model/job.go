@@ -14,9 +14,18 @@ const (
 
 type Job struct {
 	ID        string    `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
 	Status    JobStatus `json:"job_status"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+
+	// a job belongs to one user
+	UserId string
+
+	// a job has one summary
+	Summary Summary
+}
+
+type JobRequest struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
 }

@@ -9,6 +9,9 @@ type Summary struct {
 	Summary   string    `json:"summary"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+
+	// a summary belongs to one job
+	JobId string
 }
 
 type SummaryRequest struct {

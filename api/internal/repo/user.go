@@ -37,7 +37,7 @@ func (ur *UserRepository) CreateUser(name, username, encryptedPass string) (mode
 
 func (ur *UserRepository) GetUser(username string) (model.User, error) {
 	var user model.User
-	result := ur.db.Where("username = ?", username).Find(&user)
+	result := ur.db.Where("username = ?", username).First(&user)
 	if result.Error != nil {
 		return model.User{}, fmt.Errorf("user with username %s is not found", username)
 	}
