@@ -33,12 +33,10 @@ func (sr *SummaryRepository) GetSummary(id string) (model.Summary, error) {
 }
 
 func (sr *SummaryRepository) CreateSummary(s model.Summary) (model.Summary, error) {
-	fmt.Printf("Before create: %+v\n", s)
 	result := sr.db.Create(&s)
 	if result.Error != nil {
 		return model.Summary{}, fmt.Errorf("failed to create a new summary")
 	}
-	fmt.Printf("After create: %+v\n", s)
 	return s, nil
 }
 

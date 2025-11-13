@@ -3,6 +3,7 @@ package internal
 import (
 	"log"
 	"summarizer/internal/handler"
+	"summarizer/internal/middleware"
 	"summarizer/internal/repo"
 	"summarizer/internal/service"
 
@@ -32,6 +33,8 @@ func App() *fiber.App {
 	var jobHandler handler.JobHandler = *handler.NewJobHandler(jobService)
 
 	app := fiber.New()
+	app.Use(middleware.Authorization)
+
 	api := app.Group("/api/v1")
 	handler.UserRouter(api, userHandler)
 	handler.SummaryRouter(api, summaryHandler)

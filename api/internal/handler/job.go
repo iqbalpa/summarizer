@@ -40,7 +40,8 @@ func (jh *JobHandler) CreateJob(c *fiber.Ctx) error {
 	if err := c.BodyParser(&jr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	j, err := jh.js.CreateJob(jr.Title, jr.Content)
+	userId := c.Locals("userId").(string)
+	j, err := jh.js.CreateJob(jr.Title, jr.Content, userId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
