@@ -41,7 +41,7 @@ func (us *UserService) Login(username, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	token, err := utils.GenerateToken(user.Username)
+	token, err := utils.GenerateToken(user.Username, user.ID)
 	if err != nil {
 		return "", err
 	}

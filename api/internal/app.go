@@ -32,6 +32,7 @@ func App() *fiber.App {
 	var jobHandler handler.JobHandler = *handler.NewJobHandler(jobService)
 
 	app := fiber.New()
+
 	api := app.Group("/api/v1")
 	handler.UserRouter(api, userHandler)
 	handler.SummaryRouter(api, summaryHandler)

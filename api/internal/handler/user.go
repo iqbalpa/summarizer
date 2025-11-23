@@ -54,5 +54,7 @@ func (uh *UserHandler) Login(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	return c.Status(fiber.StatusAccepted).JSON(u)
+	return c.Status(fiber.StatusAccepted).JSON(fiber.Map{
+		"token": u,
+	})
 }

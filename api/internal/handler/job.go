@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"summarizer/internal/middleware"
 	"summarizer/internal/model"
 	"summarizer/internal/service"
 
@@ -9,6 +10,7 @@ import (
 
 // Router
 func JobRouter(api fiber.Router, jh JobHandler) {
+	api.Use(middleware.Authorization)
 	api.Route("job", func(router fiber.Router) {
 		router.Get("/:id", jh.GetJob)
 		router.Post("/summarize", jh.CreateJob)
@@ -40,7 +42,8 @@ func (jh *JobHandler) CreateJob(c *fiber.Ctx) error {
 	if err := c.BodyParser(&jr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	j, err := jh.js.CreateJob(jr.Title, jr.Content)
+	userId := c.Locals("userId").(string)
+	j, err := jh.js.CreateJob(jr.Title, jr.Content, userId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}

@@ -7,7 +7,7 @@ import (
 
 type IJobService interface {
 	GetJob(id string) (model.Job, error)
-	CreateJob(title, content string) (model.Job, error)
+	CreateJob(title, content, userId string) (model.Job, error)
 }
 
 type JobService struct {
@@ -30,9 +30,9 @@ func (js *JobService) GetJob(id string) (model.Job, error) {
 	return j, nil
 }
 
-func (js *JobService) CreateJob(title, content string) (model.Job, error) {
+func (js *JobService) CreateJob(title, content, userId string) (model.Job, error) {
 	j, err := js.jr.CreateJob(model.Job{
-		UserId: "219ea4f7-b72f-4f85-9aa4-65c335cbc985",
+		UserId: userId,
 		Status: model.Pending,
 	})
 	if err != nil {
