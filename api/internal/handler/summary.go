@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"fmt"
+	"summarizer/internal/middleware"
 	"summarizer/internal/model"
 	"summarizer/internal/service"
 
@@ -9,9 +11,8 @@ import (
 
 // Router
 func SummaryRouter(api fiber.Router, sh SummaryHandler) {
+	api.Use(middleware.Authorization)
 	api.Route("/summary", func(router fiber.Router) {
-		router.Get("/:id", sh.GetSummary)
-		router.Post("/", sh.CreateSummary)
 		router.Get("/", sh.GetAllSummaries)
 	})
 }
@@ -49,7 +50,8 @@ func (sh *SummaryHandler) CreateSummary(c *fiber.Ctx) error {
 }
 
 func (sh *SummaryHandler) GetAllSummaries(c *fiber.Ctx) error {
-	s, err := sh.ss.GetAllSummaries()
+	userId := c.Locals("userId").(string)
+	s, err := sh.ss.GetAllSummaries(userId)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
