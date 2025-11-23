@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"strings"
 	"summarizer/internal/utils"
 
@@ -8,11 +9,6 @@ import (
 )
 
 func Authorization(c *fiber.Ctx) error {
-	path := c.Path()
-	if strings.Contains(path, "/auth/") {
-		return c.Next()
-	}
-
 	authToken := c.Get("Authorization", "")
 	if authToken == "" {
 		return c.Status(fiber.StatusForbidden).JSON("unauthorized")
@@ -20,11 +16,13 @@ func Authorization(c *fiber.Ctx) error {
 
 	lst := strings.Split(authToken, " ")
 	if len(lst) != 2 || lst[0] != "Bearer" {
+		fmt.Println(lst)
 		return c.Status(fiber.StatusForbidden).JSON("unauthorized")
 	}
 
 	claims, err := utils.ExtractClaims(lst[1])
 	if err != nil {
+		fmt.Println(err)
 		return c.Status(fiber.StatusForbidden).JSON(err)
 	}
 

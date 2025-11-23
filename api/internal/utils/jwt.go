@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -20,6 +21,7 @@ func GenerateToken(username, id string) (string, error) {
 		"iss":      "iqbalpa-summarizer",
 		"username": username,
 		"userId":   id,
+		"exp":      time.Now().Add(1 * time.Hour).Unix(),
 	})
 	s, err := t.SignedString(key)
 	if err != nil {
