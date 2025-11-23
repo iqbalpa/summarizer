@@ -8,7 +8,7 @@ import (
 type ISummaryService interface {
 	GetSummary(id string) (model.Summary, error)
 	CreateSummary(title, content, jobId string) (model.Summary, error)
-	GetAllSummaries() ([]model.Summary, error)
+	GetAllSummaries(userId string) ([]model.Summary, error)
 }
 
 type SummaryService struct {
@@ -41,8 +41,8 @@ func (ss *SummaryService) CreateSummary(title, content, jobId string) (model.Sum
 	return s, nil
 }
 
-func (ss *SummaryService) GetAllSummaries() ([]model.Summary, error) {
-	s, err := ss.sr.GetAllSummaries()
+func (ss *SummaryService) GetAllSummaries(userId string) ([]model.Summary, error) {
+	s, err := ss.sr.GetAllSummaries(userId)
 	if err != nil {
 		return []model.Summary{}, nil
 	}

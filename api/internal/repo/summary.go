@@ -9,7 +9,7 @@ import (
 
 type ISummaryRepository interface {
 	GetSummary(id string) (model.Summary, error)
-	GetAllSummaries() ([]model.Summary, error)
+	GetAllSummaries(userId string) ([]model.Summary, error)
 	CreateSummary(summary model.Summary) (model.Summary, error)
 }
 
@@ -40,9 +40,19 @@ func (sr *SummaryRepository) CreateSummary(s model.Summary) (model.Summary, erro
 	return s, nil
 }
 
-func (sr *SummaryRepository) GetAllSummaries() ([]model.Summary, error) {
+func (sr *SummaryRepository) GetAllSummaries(userId string) ([]model.Summary, error) {
+	// Get all job ids belong to UserId
+	var jobIds []string
+	result := sr.db.Model(&model.Job{}).
+		Select("id").
+		Where("user_id = ?", userId).
+		Find(&jobIds)
+	if result.Error != nil {
+		return []model.Summary{}, fmt.Errorf("failed to retrieve all job ids")
+	}
+	// get all summaries belong to userId, based on the jobIds
 	var summaries []model.Summary
-	result := sr.db.Find(&summaries)
+	result = sr.db.Where("job_id IN ?", jobIds).Find(&summaries)
 	if result.Error != nil {
 		return []model.Summary{}, fmt.Errorf("failed to retrieve all summaries")
 	}
